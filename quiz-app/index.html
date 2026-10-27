@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Simple Quiz</title>
+  <style>body{font-family:Arial;max-width:600px;margin:40px auto;padding:20px}button{padding:10px 16px;margin-top:15px;cursor:pointer}.option{display:block;margin:10px 0}</style>
+</head>
+<body>
+  <h1>Web Basics Quiz</h1>
+  <p id="question"></p>
+  <div id="options"></div>
+  <button id="nextButton">Next question</button>
+  <p id="result"></p>
+  <script>
+    const questions = [
+      { text: "What does HTML create?", options: ["Web page structure", "A database", "An operating system"], answer: 0 },
+      { text: "Which language styles a web page?", options: ["Python", "CSS", "SQL"], answer: 1 },
+      { text: "Which language adds web page behavior?", options: ["JavaScript", "HTML", "XML"], answer: 0 }
+    ];
+    let current = 0, score = 0;
+    const question = document.querySelector("#question");
+    const options = document.querySelector("#options");
+    function showQuestion() {
+      const item = questions[current];
+      question.textContent = item.text;
+      options.innerHTML = item.options.map((option, index) => `<label class="option"><input type="radio" name="answer" value="${index}"> ${option}</label>`).join("");
+    }
+    document.querySelector("#nextButton").addEventListener("click", () => {
+      const selected = document.querySelector("input[name=answer]:checked");
+      if (!selected) return alert("Please choose an answer.");
+      if (Number(selected.value) === questions[current].answer) score++;
+      current++;
+      if (current < questions.length) showQuestion();
+      else { question.textContent = "Quiz complete!"; options.innerHTML = ""; document.querySelector("#nextButton").disabled = true; document.querySelector("#result").textContent = `Your score is ${score}/${questions.length}.`; }
+    });
+    showQuestion();
+  </script>
+</body>
+</html>
